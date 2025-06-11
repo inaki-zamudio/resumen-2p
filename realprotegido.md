@@ -78,8 +78,7 @@ Un **descriptor de segmento** es una estructura de datos en la [GDT](#global-des
 
 * `Segment Limit`: Indica el tamaño de un segmento (menos uno! -Furfi), interpretado como **"el máximo offset posible para moverse en ese segmento"**. Para esto, se debe tener en cuenta el bit **G**.
 * `Base Address`: Define la ubicación del comienzo del segmento.
-* `Type`: ver [Tabla de Type](./img/type.png)
-ver [Figura 5](#figura-5).
+* `Type`: ver [Figura 5](#figura-5).
 * `S (descriptor type) flag`: Especifica si el descriptor es para un segmento de sistema **(S = 0)** o de datos **(S = 1)**.
 * `DPL (descriptor privilege level)`: Indica el nivel de privilegio. Sólo usamos **DPL = 0** para kernel y **DPL = 3** para usuario.
 * `P (segment-present)`: Indica si el segmento está presente en memoria **(P = 1)** o no **(P = 0)**.
@@ -89,3 +88,6 @@ ver [Figura 5](#figura-5).
 ![type](img/type.png)
 
 ## Global Descriptor Table (GDT)
+La **GDT** es una tabla que guarda los [descriptores de segmento](#descriptor-de-segmento).
+
+Para cargarla, se necesita hacer uso de la instrucción `LGDT`, que carga el registro `GDTR` con los valores de la base y el límite de la **GDT**.
