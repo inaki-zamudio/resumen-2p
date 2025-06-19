@@ -49,3 +49,46 @@ La IDT contiene descriptores para:
 * **Compuertas de tarea**: ver tareas.md
 * **Compuertas de interrupción**
 * **Compuertas de trampa** que son similares a las de interrupción pero manejan distinto el estado del bit de interrupción en EFLAGS y no utilizaremos.
+
+![IDT descriptor](/img/idt_desc.png)
+
+Nosotros vamos a usar compuertas de interrupción, así que las entradas de la IDT se verán como la **Interrupt Gate**
+
+Atributos importantes:
+* **Offset**: Dirección de memoria donde comienza la rutina de interrupción.
+* **Segment Selector**: Indica qué selector utilizar al ejecutar código de la rutina.
+* **P**, **DPL**: Indican si la rutina se encuentra en memoria y el nivel de privilegio.
+* **Bits 8 a 12** de los bytes 4 a 7 indican el tipo de la compuerta de interrupción, el bit D indica si es de 32 o 16 bits.
+
+![Atributo de tipo](/img/type_attr.png)
+
+El atributo de tipo determina qué representa nuestra entrada en la IDT, sólo usamos `1110`.
+
+![Esquema general](/img/esquema_general.png)
+
+## Interrupciones de teclado y reloj
+
+Las interrupciones externas son administradas por un controlador de interrupciones (**PIC**).
+
+[**TO-DO**]
+
+## Syscalls
+
+- Forma que tiene el sistema de exponer funcionalidad a espacio de usuario.
+- Pueden tener que ver con el manejo de procesos, filesystems, I/O, y otras cosas más.
+- Hay varias formas de implementarlas, pero la que vamos a usar son las **interrupciones de software**, o sea asociando una o varias syscalls a una interrupción particular.
+Una aplicación puede acceder a la syscall 76 haciendo: int 0x4c.
+
+### Implementación de una syscall
+En nuestro caso, se va a hacer con una rutina de interrupción, tal como hicimos para las excepciones o interrupciones externas:
+
+```nasm
+    global _isrXX
+    ...
+    _isrXX:
+        pushad
+        ...
+        popad
+        iret
+```
+Esta rutina atiende a la interrupción XX, con un prólogo y un epílogo muy generales. No hay llamada a `pic_finish1` ya que es interna y el PIC no tuvo intervención, y un retorno de función con `IRET`.
