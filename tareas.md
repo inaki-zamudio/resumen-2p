@@ -3,6 +3,13 @@ Una **tarea** es una **unidad de trabajo** que el procesador puede **despachar**
 
 Dos o más tareas pueden tener un mismo *código de programa*, sin embargo, su *contexto de ejecución y datos asociados* pueden ser distintos. 
 
+## Índice:
+- [Scheduler](#scheduler)
+- [Context Switch](#intercambio-de-tareas)
+- [Tareas Inicial e Idle](#definición-de-tareas-inicial-e-idle)
+- [Rutina de atención de interrupción del reloj](#rutina-de-atención-de-interrupciones-de-reloj)
+- [Niveles de privilegio de tareas](#niveles-de-privilegio-de-tareas)
+
 ## Espacio de ejecución y segmento de estado
 En la memoria, una tarea va a tener:
 - Espacio de ejecución: es decir <u>*páginas mapeadas*</u> donde va a tener el <u>*código*</u>, <u>*datos*</u> y <u>*pilas*</u>.
